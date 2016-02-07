@@ -17,12 +17,26 @@ app.get('/', function(req, res) {
 
 // get all todos
 app.get('/todos',function(req, res) {
-    res.json(todos);
+    var queryParams = req.query;
+    var filteredTodos = todos;
+    
+    if (queryParams.hasOwnProperty('completed') && queryParams.completed === 'true')
+    {
+        filteredTodos = _.where(filteredTodos,{completed: true});
+
+    } else if (queryParams.hasOwnProperty('completed') && queryParams.completed === 'false')
+    {
+        filteredTodos = _.where(filteredTodos,{completed: false});        
+    }
+    //else {filteredTodos = [];}
+    //res.send(queryParams);
+    
+    res.json(filteredTodos);
 });
 
 // get one todo by id
 app.get('/todos/:id', function(req, res) {
-    var todoID = parseInt(req.params.id, 10);
+    var todoId = parseInt(req.params.id, 10);
     var matchedTodo = _.findWhere(todos,{id: todoId});
     
     if (matchedTodo) {
