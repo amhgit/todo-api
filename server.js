@@ -46,8 +46,18 @@ app.post('/todos', function(req, res) {
     res.json(body);
 })
 
+app.delete('/todos/:id', function(req, res) {
+    var todoId = parseInt(req.params.id, 10);
+    var matchedTodo = _.findWhere(todos,{id: todoId});
+    if (matchedTodo) {
+        todos = _.without(todos, matchedTodo);
+        res.json(matchedTodo);
+    } else {
+        res.status(404).json({"error": "no todo found with that Id"});
+    }
+});
     //res.send('Asking for todo with id of: ' + req.params.id);
 
-app.listen(PORT, function(){
+app.listen(PORT, function() {
     console.log('Express listening on port: ' + PORT);
 });
