@@ -77,7 +77,7 @@ app.get('/todos',function(req, res) {
 //    }
 //    
 //    res.json(filteredTodos);
->>>>>>> b66cea7995de54240163dbde545e7384bb99245e
+//>>>>>>> b66cea7995de54240163dbde545e7384bb99245e
 });
 
 // get one todo by id
