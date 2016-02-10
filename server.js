@@ -31,10 +31,53 @@ app.get('/todos',function(req, res) {
     
     //db.todo.findAll({where:{completed: (query.completed === //'true')}}).then(function(todos) {
     db.todo.findAll({where:where}).then(function(todos) {
+<<<<<<< HEAD
             res.json(todos);          
     },function(e) {
         res.status(500).send
     });        
+=======
+        //if (!!todos) {
+            res.json(todos);          
+        //} else {
+        //    res.json([]);        
+        //}
+    }),function(e) {
+        res.status(500).send
+    };        
+    
+    
+    
+//    {
+//        filteredTodos = _.where(filteredTodos,{completed: true});
+//
+//    } else if (queryParams.hasOwnProperty('completed') && queryParams.completed === 'false')
+//    {
+//        filteredTodos = _.where(filteredTodos,{completed: false});   
+//    }
+//    var filteredTodos = todos;
+//    
+//    if (queryParams.hasOwnProperty('completed') && queryParams.completed === 'true')
+//    {
+//        filteredTodos = _.where(filteredTodos,{completed: true});
+//
+//    } else if (queryParams.hasOwnProperty('completed') && queryParams.completed === 'false')
+//    {
+//        filteredTodos = _.where(filteredTodos,{completed: false});   
+//    }
+//
+//    // GET /todos?completed=false&q=home
+//    // "got o work on saturday".indexof("work") -1 = false else index
+//    
+//    if (queryParams.hasOwnProperty('q') && queryParams.q.length > 0)
+//    {
+//        filteredTodos = _.filter(filteredTodos, function(todo) {
+//            return todo.description.toLowerCase().indexOf(queryParams.q.toLocaleLowerCase()) > -1;
+//        });
+//    }
+//    
+//    res.json(filteredTodos);
+>>>>>>> b66cea7995de54240163dbde545e7384bb99245e
 });
 
 // get one todo by id
