@@ -74,14 +74,6 @@ app.delete('/todos/:id', function(req, res) {
     }).then(function(todo) {
             res.json(todo);             
         });
-    });
-//    var matchedTodo = _.findWhere(todos,{id: todoId});
-//    if (!matchedTodo) {
-//        res.status(404).json({"error": "no todo found with that Id"});
-//    } else {
-//        todos = _.without(todos, matchedTodo);
-//        res.json(matchedTodo);
-//    }
 });
 
 // put - to update todo item
