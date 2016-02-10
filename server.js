@@ -65,6 +65,7 @@ app.post('/todos', function(req, res) {
 
 app.delete('/todos/:id', function(req, res) {
     var todoId = parseInt(req.params.id, 10);
+    
     db.todo.destroy({
         where: {
             id: todoId
@@ -72,7 +73,7 @@ app.delete('/todos/:id', function(req, res) {
     }).then(function(rowsDeleted) {
         if (rowsDeleted === 0) {
             res.status(404).json({
-                error: 'No todo with id(' + toId ') found'
+                error: 'No todo with id(' + todoId + ') found'
             });
         }
                         
