@@ -67,12 +67,13 @@ app.delete('/todos/:id', function(req, res) {
     var todoId = parseInt(req.params.id, 10);
     var where = {}
     where.id = todoId;
-    db.todo.destroy({where: where}).then(function(todoDeleted) {
-        if(todoDeleted === 0) {
-            res.status(200).send();             
-        } else {
-            res.status(400).json(e);
+    db.todo.destroy({
+        where: {
+            id: todoId
         }
+    }).then(function(todo) {
+            res.json(todo);             
+        });
     });
 //    var matchedTodo = _.findWhere(todos,{id: todoId});
 //    if (!matchedTodo) {
