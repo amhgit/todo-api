@@ -21,3 +21,9 @@ git add .
 git commit -am "todo Init Repo"
 git push heroku master
 heroku open
+
+* to add postgre sql to heroku
+
+heroku addons:create heroku-postgresql:hobby-dev
+npm install pg --save
+npm install pg-hstore --save
