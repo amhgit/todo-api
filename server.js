@@ -31,12 +31,12 @@ app.get('/todos',function(req, res) {
     
     //db.todo.findAll({where:{completed: (query.completed === //'true')}}).then(function(todos) {
     db.todo.findAll({where:where}).then(function(todos) {
-<<<<<<< HEAD
+//<<<<<<< HEAD
             res.json(todos);          
     },function(e) {
         res.status(500).send
     });        
-=======
+//=======
         //if (!!todos) {
             res.json(todos);          
         //} else {
