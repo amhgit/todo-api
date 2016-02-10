@@ -71,7 +71,9 @@ app.delete('/todos/:id', function(req, res) {
         }
     }).then(function(rowsDeleted) {
         if (rowsDeleted === 0) {
-            res.status(404).send();
+            res.status(404).json({
+                error: 'No todo with id(' + toId ') found'
+            });
         }
                         
     }, function() {
