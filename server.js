@@ -65,14 +65,12 @@ app.post('/todos', function(req, res) {
 
 app.delete('/todos/:id', function(req, res) {
     var todoId = parseInt(req.params.id, 10);
-    var where = {}
-    where.id = todoId;
     db.todo.destroy({
         where: {
             id: todoId
         }
     }).then(function(rowsDeleted) {
-        if (rowsDeleted == 0) {
+        if (rowsDeleted === 0) {
             res.status(404).send();
         }
                         
@@ -115,4 +113,3 @@ db.sequelize.sync().then(function() {
         console.log('Express listening on port: ' + PORT);
     });    
 });
-
