@@ -71,9 +71,14 @@ app.delete('/todos/:id', function(req, res) {
         where: {
             id: todoId
         }
-    }).then(function(todo) {
-            res.json(todo);             
-        });
+    }).then(function(rowsDeleted) {
+        if (rowsDeleted == 0) {
+            res.status(404).send();
+        }
+                        
+    }, function() {
+            res.status(500).send();
+    });
 });
 
 // put - to update todo item
