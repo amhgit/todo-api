@@ -21,7 +21,9 @@ app.get('/', function(req, res) {
 // get all todos
 app.get('/todos',middleware.requireAuthentication, function(req, res) {
     var query = req.query;
-    var where = {};
+    var where = {
+        userId: req.user.get('id')
+    };
     
     if (query.hasOwnProperty('completed')) {
         where.completed = query.completed === 'true';
@@ -32,6 +34,10 @@ app.get('/todos',middleware.requireAuthentication, function(req, res) {
     }
     
     //db.todo.findAll({where:{completed: (query.completed === //'true')}}).then(function(todos) {
+    
+    console.log('UserID: ' + req.user.id)
+    //where.userId = req.user.id;
+    
     db.todo.findAll({where:where}).then(function(todos) {
             res.json(todos);          
     },function(e) {
@@ -44,7 +50,7 @@ app.get('/todos',middleware.requireAuthentication, function(req, res) {
 app.get('/todos/:id',middleware.requireAuthentication, function(req, res) {
     var todoId = parseInt(req.params.id, 10);
     
-    db.todo.findById(todoId).then(function(todo) {
+    db.todo.findById(todoId,{where:{id: todoId,userId: req.user.get('id')}}).then(function(todo) {
         if (!!todo) {
            res.json(todo.toJSON()); 
         } else {
@@ -75,7 +81,8 @@ app.delete('/todos/:id', middleware.requireAuthentication,function(req, res) {
     
     db.todo.destroy({
         where: {
-            id: todoId
+            id: todoId,
+            userId: req.user.get('id')
         }
     }).then(function(rowsDeleted) {
         if (rowsDeleted === 0) {
@@ -106,7 +113,9 @@ app.put('/todos/:id', middleware.requireAuthentication,function(req, res) {
         attributes.description = body.description;
     }
     
-    db.todo.findById(todoId).then(function(todo) {
+    //db.todo.findById(todoId).then(function(todo) {
+    //db.todo.findById(todoId,{where:{userId: //req.user.get('id')}}).then(function(todo) {
+    db.todo.findOne({where:{userId: req.user.get('id'), id: todoId}}).then(function(todo) {
        if(todo) {
         todo.update(attributes).then(function(todo) {
             res.json(todo.toJSON());
@@ -139,7 +148,9 @@ app.post('/users/login', function(req,res) {
         var token = user.generateToken('authentication');
 
         if (token) {
+            console.log('Auth: ' + token);
             res.header('Auth', token).json(user.toPublicJSON());
+            
         } else {
             res.status(401).send();
         }
@@ -150,8 +161,8 @@ app.post('/users/login', function(req,res) {
 });
 
 //{force:true}  -- forces the database to be rebuilt
-//db.sequelize.sync().then(function() {
-db.sequelize.sync({force:true}).then(function() {
+db.sequelize.sync().then(function() {
+//db.sequelize.sync({force:true}).then(function() {
     app.listen(PORT, function() {
         console.log('Express listening on port: ' + PORT);
     });    
