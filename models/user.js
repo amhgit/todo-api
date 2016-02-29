@@ -43,8 +43,10 @@ module.exports = function(sequelize, DataTypes) {
         },
         classMethods: {
           authenticate: function(body) {
+              console.log('**user.authenticate called');
             return new Promise(function(resolve, reject) {
                 if (typeof body.email !== 'string' ||  typeof body.password !== 'string') {
+                    console.log('user.authenticate: email or password not a string');
                     return reject();
                 } 
                 
@@ -53,13 +55,16 @@ module.exports = function(sequelize, DataTypes) {
                         email: body.email 
                     }
                 }).then(function(user) {
+                    //console.log(user);
                    if (!user || !bcrypt.compareSync(body.password, user.get('password_hash'))) {
+                       console.log('password/password_hash:' + body.password + '/' + bcrypt.compareSync(body.password, user.get('password_hash')));
                        return reject(); 
                    }
                    
                    resolve(user);
                    //res.json(user.toPublicJSON());
                 }, function(e) {
+                    console.log('authenticate: did not find user(' + body.email + '/' + body.password + ')');
                     reject();
                 });
             });
@@ -99,9 +104,7 @@ module.exports = function(sequelize, DataTypes) {
                 // install crypto-js03.1.5 --save
                 var stringData = JSON.stringify({id: this.get('id'), type: type});
                 var encryptedData = cryptojs.AES.encrypt(stringData,'abc123!@#!').toString();
-                var token = jwt.sign({
-                  token: encryptedData
-                }, 'qwerty098');
+                var token = jwt.sign({token: encryptedData}, 'qwerty098');
                 return token;
 
               } catch(e) {
